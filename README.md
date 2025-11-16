@@ -9,7 +9,8 @@ It uses:
 - **Tailwind CSS**
 - **Google News API (NewsAPI.org)**  
 - **React Router**
-
+- **Axios**
+- **Lucide Icons**
 ---
 
 ## Features
@@ -33,7 +34,7 @@ Clicking an article opens a detailed page that includes:
 - Description  
 - Trimmed content (with link to full article)  
 - Related articles  
-- Comments section (static for assignment)
+- Comments section (static)
 
 ### Error & Loading States  
 Clean visual feedback when:
@@ -44,6 +45,15 @@ Clean visual feedback when:
 
 ### Fully Responsive  
 Works on desktop, tablets, and mobile.
+
+### Clone repository
+git clone https://github.com/Dara92-july/NewsDay.git
+
+### Install dependencies
+npm install
+
+### Start development server
+npm run dev
 
 ---
 

@@ -12,16 +12,34 @@ function useNewsApi(category = 'general', search = '') {
     const fetchArticles = async () => {
       try {
         setLoading(true);
+        setError(null);
         
-
-        const url = search
+        // Use CORS proxy for production
+        const proxyUrl = 'https://api.allorigins.win/raw?url=';
+        
+        const newsUrl = search
           ? `https://newsapi.org/v2/everything?q=${search}&apiKey=${API_KEY}`
           : `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${API_KEY}`;
 
-        const response = await axios.get(url);
-        setArticles(response.data.articles);
+        // Use proxy in production, direct API in development
+        const finalUrl = window.location.hostname.includes('vercel.app') 
+          ? `${proxyUrl}${encodeURIComponent(newsUrl)}`
+          : newsUrl;
+
+        console.log('Fetching from:', finalUrl);
+        
+        const response = await axios.get(finalUrl);
+        
+        if (response.data.articles && response.data.articles.length > 0) {
+          setArticles(response.data.articles);
+        } else {
+          setError('No articles found');
+          setArticles([]);
+        }
       } catch (err) {
-        setError(err.message);
+        console.error('API Error:', err);
+        setError('Failed to fetch news. Please try again later.');
+        setArticles([]);
       } finally {
         setLoading(false);
       }
@@ -32,4 +50,5 @@ function useNewsApi(category = 'general', search = '') {
 
   return { articles, loading, error };
 }
+
 export default useNewsApi;

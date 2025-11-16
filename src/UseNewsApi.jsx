@@ -14,21 +14,20 @@ function useNewsApi(category = 'general', search = '') {
         setLoading(true);
         setError(null);
         
-        // Use CORS proxy for production
-        const proxyUrl = 'https://api.allorigins.win/raw?url=';
+        // Use corsproxy.io which works better
+        const proxyUrl = 'https://corsproxy.io/?';
         
         const newsUrl = search
           ? `https://newsapi.org/v2/everything?q=${search}&apiKey=${API_KEY}`
           : `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${API_KEY}`;
 
-        // Use proxy in production, direct API in development
-        const finalUrl = window.location.hostname.includes('vercel.app') 
-          ? `${proxyUrl}${encodeURIComponent(newsUrl)}`
-          : newsUrl;
+        const finalUrl = `${proxyUrl}${encodeURIComponent(newsUrl)}`;
 
         console.log('Fetching from:', finalUrl);
         
-        const response = await axios.get(finalUrl);
+        const response = await axios.get(finalUrl, {
+          timeout: 10000 // 10 second timeout
+        });
         
         if (response.data.articles && response.data.articles.length > 0) {
           setArticles(response.data.articles);

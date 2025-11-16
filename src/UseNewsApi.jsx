@@ -14,7 +14,6 @@ function useNewsApi(category = 'general', search = '') {
         setLoading(true);
         setError(null);
         
-        // Use corsproxy.io which works better
         const proxyUrl = 'https://corsproxy.io/?';
         
         const newsUrl = search
@@ -26,7 +25,7 @@ function useNewsApi(category = 'general', search = '') {
         console.log('Fetching from:', finalUrl);
         
         const response = await axios.get(finalUrl, {
-          timeout: 10000 // 10 second timeout
+          timeout: 10000 
         });
         
         if (response.data.articles && response.data.articles.length > 0) {
